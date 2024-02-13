@@ -245,6 +245,20 @@ class Cloudinary::Uploader
     end
   end
 
+
+  # Added by Isaac
+  def self.create_collage(options = {})
+    call_api("create_collage", options) do
+      params = {
+        :timestamp               => Time.now.to_i,
+        :transformation          => Cloudinary::Utils.build_eager(options[:transformation]),
+        :manifest_json           => options[:manifest_json] && options[:manifest_json].to_json,
+        :tags                    => options[:tags] && Cloudinary::Utils.build_array(options[:tags]).join(","),
+        :overwrite               => Cloudinary::Utils.as_safe_bool(options[:overwrite])
+      }
+      params
+    end
+  end
   # Generates sprites by merging multiple images into a single large image.
   #
   # @param [String|Hash] tag Treated as additional options when hash is passed, otherwise as a tag
